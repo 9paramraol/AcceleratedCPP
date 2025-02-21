@@ -1,0 +1,1 @@
+- This repo contains contains the notes from accelerated cpp book.
