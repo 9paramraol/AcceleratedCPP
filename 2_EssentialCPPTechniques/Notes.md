@@ -17,3 +17,4 @@
   2. const auto&: large types where you want to avoid the copy
   3. auto&& : take and dump type variables.
 - minor detail about std::forward, and the calling of the correct function.
+- const function and const propogation.
