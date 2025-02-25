@@ -1,8 +1,11 @@
 # TRAILING RETURN TYPES FOR AUTO
 # THE AUTO AND DECLTYPE RULES
 
-- auto and decltype (auto)
 - rules of auto and relation to decltype.
+  - const and referenceness
+  - why auto& takes the constantness too
+  - decltype (auto)
+- Trailing return types and when to use them.
 - Copy elision cases.
 - Why it does not work in case of std::move()
 - AUTO& constantness preserving
@@ -18,3 +21,20 @@
   3. auto&& : take and dump type variables.
 - minor detail about std::forward, and the calling of the correct function.
 - const function and const propogation.
+- Different types of operations:
+  1. Copy
+  2. Swap
+  3. Move
+- Rule of 3 and the 2 problems that arise because of it, finally the rule of 5.
+- What are r-values?
+- Copy assignable and move assignable.
+- default and its usage. Adding even one of the 5 leads to non-generation of the other (why? answer this part)
+- Works in copy but not in move.
+- The noexcpet note.
+- Default destructors to get more peformance. The case of std::copy and why its not optimized.
+- The pitfall of using the default move. Note:
+  1. compound types are actaully moved.
+  2. simple types are just moved.
+- && at the end of the function, how to use it.
+- Copy elision, and why we shouldn't always move.
+- Cases when copies are ok, cases when copies are not ok.
