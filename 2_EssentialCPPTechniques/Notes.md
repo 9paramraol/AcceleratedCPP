@@ -1,11 +1,25 @@
-# TRAILING RETURN TYPES FOR AUTO
-# THE AUTO AND DECLTYPE RULES
-
-- rules of auto and relation to decltype.
-  - const and referenceness
-  - why auto& takes the constantness too
-  - decltype (auto)
-- Trailing return types and when to use them.
+## rules of auto and relation to decltype.
+  - const and referenceness:
+    1. Remove the const and refrece parameters from the type to be matched.
+    2. Not match the type.
+```
+int a = 10;
+const int& b = a;
+auto c = b; // type of c is  int
+```
+## why auto& takes the constantness too
+Basically if reference is used then in that case the what we expect is that the type matches one to one compared to the object.
+```
+auto& c = b;
+/* the intent over here is to get b as it is, so => the exact type of b should be taken along with the constantness */
+```
+## decltype (auto)
+- Just take the rhs and get its type.
+```
+decltype(auto) c = b;
+/* c take the type that is same as b*/
+```
+## Trailing return types and when to use them.
 - Copy elision cases.
 - Why it does not work in case of std::move()
 - AUTO& constantness preserving
