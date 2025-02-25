@@ -61,17 +61,55 @@ A func()
 A a = std::move (b); // Explicit instructtion to use the move assignment operator
 ```
 
-- auto x, has to be initialized.
-- binding must specified.
-- Usage of auto& and const auto&, its advantages.
-- auto&& and advantage over const auto&
-- auto&& is a forwarding reference, why?
-- Final rules:
-  1. const auto : fundamental types + small non fundamental types
-  2. const auto&: large types where you want to avoid the copy
+## 6. auto x, has to be initialized.
+Nothing fancy over here, just a generic way to initialize any variable.
+```cpp
+auto x = a;
+auto b = Obj();
+```
+**Note**: copy-elision is guranteed post c++17 so these initializations will be optimized whenever possible.
+
+## 7. Usage of auto& and const auto&, its advantages.
+- **const auto&** can bind to anything, weather it be a normal object or a temporary object. The only caveat is that the object remaing constant througout the lifetime and can not be mutated.
+- **auto&**: should be used if the object needs to be mutated but this will not bind to the r-values.
+```cpp
+const auto& a = A(); // this was a temporary object that will remain till the scope ends
+const auto& b = c; // this will remaing till c is not destroyed
+```
+
+## 8. auto&& and advantage over const auto&, and why is it called forwarding refrence..
+- auto&& allows us to mutate the objects, but const does not.
+- auto&& transferes the type as it is. It forwards l-values as l-valyes and r-values as r-values.
+
+**Final rules:**
+  1. const auto : fundamental types + small non fundamental types, they were going to be copied anyways.
+  2. const auto&: large types where you want to avoid the copy.
   3. auto&& : take and dump type variables.
-- minor detail about std::forward, and the calling of the correct function.
-- const function and const propogation.
+
+## 9. minor detail about std::forward, and the calling of the correct function.
+```cpp
+#include <iostream>
+#include <utility>
+
+template <typename T>
+void forwarder(T&& arg) {
+      process(std::forward<T>(arg));  // Perfect forwarding
+}
+
+void process(int& x) { std::cout << "Lvalue\n"; }
+void process(int&& x) { std::cout << "Rvalue\n"; }
+
+int main() {
+  int a = 5;
+  forwarder(a);   // Calls process(int&) -> "Lvalue"
+  forwarder(10);  // Calls process(int&&) -> "Rvalue"
+}
+```
+
+## 10. const function and const propogation
+- **std::experimental::propogate_const** is the type that is present in std, the pointer's constantness is porpogated to the value too.
+
+## Move semantics:
 - Different types of operations:
   1. Copy
   2. Swap
