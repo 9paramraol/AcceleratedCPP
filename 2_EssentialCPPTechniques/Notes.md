@@ -15,7 +15,7 @@ auto& c = b;
 ```
 ## decltype (auto)
 - Just take the rhs and get its type.
-```
+```cpp
 decltype(auto) c = b;
 /* c take the type that is same as b*/
 ```
