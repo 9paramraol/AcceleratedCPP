@@ -109,21 +109,53 @@ int main() {
 ## 10. const function and const propogation
 - **std::experimental::propogate_const** is the type that is present in std, the pointer's constantness is porpogated to the value too.
 
-## Move semantics:
+# Move semantics:
 - Different types of operations:
-  1. Copy
-  2. Swap
-  3. Move
-- Rule of 3 and the 2 problems that arise because of it, finally the rule of 5.
-- What are r-values?
-- Copy assignable and move assignable.
-- default and its usage. Adding even one of the 5 leads to non-generation of the other (why? answer this part)
-- Works in copy but not in move.
-- The noexcpet note.
-- Default destructors to get more peformance. The case of std::copy and why its not optimized.
-- The pitfall of using the default move. Note:
+  1. Copy : take the object memcpy and thats it.
+  2. Swap : take the object and change the pointers.
+  3. Move : take the object and memmove, the original memory may get destroyed.
+
+## 11. Rule of 3 and the 2 problems that arise because of it, finally the rule of 5.
+- In the earlier versions of cpp there was not move constructor or assignment operator.
+- This lead to a lot of deep copies being created.
+- So move-tor's were introduced to reduce the memory footprints and make operations more optimized.
+
+## 12. What are r-values?
+- They are non-named values in code or the ones which have std::move wrapped around them.
+ 
+## 13. default and its usage
+- If no tor is added the the compiler will generate its own tor's.
+- If a copy constructor is added then the compiler **won't** generate the move operators. This is becase the programmer may have intented to us the copy constructors instead of the move ones.
+- For move, this is not the case as there will definitely be cases where the deep copy needs to be created.
+- **Note** : add noexcept in move, or else compiler may not recognize it.
+
+## 14. Default destructors to get more peformance
+- When default destructors are not used, then all the named variables are destructed when they go out of scope, thus preventing copy-elision in some compilers.
+- Think of an example where this would be a problem (hint its copy related).
+
+## 15. The pitfall of using the default move.
+Note:
   1. compound types are actaully moved.
   2. simple types are just moved.
-- && at the end of the function, how to use it.
-- Copy elision, and why we shouldn't always move.
-- Cases when copies are ok, cases when copies are not ok.
+```cpp
+class A
+{
+  int a; // this value will remain as it is if the move is used
+  std::vector<int> b; // this will be swapped by the defautlt move
+}
+```
+- Access to b[a] will just f things up.
+
+## 16. && at the end of the function, how to use it.
+```cpp
+class A
+{
+  void func() && { std::cout << "This is && function" << std::endl;}
+  void func() { std::cout << "This is l value function" << std::endl;}
+}
+```
+pretty much the same as function overloading, basicall && at the end of the function indicates that this function should be used incase the call comes from a temporary object.
+
+## 17. Cases when copies are ok, cases when copies are not ok.
+- If the function is transforming from the original input, then copies are alright since they were going to be formed any way.
+- If just assignment is taking place then nah.. just give the refrence, or move the object.
