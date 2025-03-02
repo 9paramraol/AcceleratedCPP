@@ -1,6 +1,6 @@
 ## 1. rules of auto and relation to decltype.
   - const and referenceness:
-    1. Remove the const and refrece parameters from the type to be matched.
+    1. Remove the const and refrence parameters from the type to be matched.
     2. Not match the type.
 ```cpp
 int a = 10;
@@ -84,7 +84,7 @@ const auto& b = c; // this will remaing till c is not destroyed
 **Final rules:**
   1. const auto : fundamental types + small non fundamental types, they were going to be copied anyways.
   2. const auto&: large types where you want to avoid the copy.
-  3. auto&& : take and dump type variables.
+  3. auto&& : take and dump type variables without mutating the type.
 
 ## 9. minor detail about std::forward, and the calling of the correct function.
 ```cpp
@@ -116,7 +116,7 @@ int main() {
   3. Move : take the object and memmove, the original memory may get destroyed.
 
 ## 11. Rule of 3 and the 2 problems that arise because of it, finally the rule of 5.
-- In the earlier versions of cpp there was not move constructor or assignment operator.
+- In the earlier versions of cpp there was no move constructor or assignment operator.
 - This lead to a lot of deep copies being created.
 - So move-tor's were introduced to reduce the memory footprints and make operations more optimized.
 
@@ -154,7 +154,7 @@ class A
   void func() { std::cout << "This is l value function" << std::endl;}
 }
 ```
-pretty much the same as function overloading, basicall && at the end of the function indicates that this function should be used incase the call comes from a temporary object.
+pretty much the same as function overloading, basically && at the end of the function indicates that this function should be used incase the call comes from a temporary object.
 
 ## 17. Cases when copies are ok, cases when copies are not ok.
 - If the function is transforming from the original input, then copies are alright since they were going to be formed any way.
